@@ -1160,6 +1160,21 @@ func handleAction(c *webClient, a any) error {
 			log.Printf("got client for wrong group")
 			return nil
 		}
+
+		// SupplyCanvas: Filter participant list for observers
+		// Observers should only see presenters/operators, not other observers
+		receiverIsObserver := member("observe", c.permissions) &&
+			!member("present", c.permissions) &&
+			!member("op", c.permissions)
+		pushedUserIsObserver := member("observe", a.permissions) &&
+			!member("present", a.permissions) &&
+			!member("op", a.permissions)
+
+		// Skip sending observer info to other observers
+		if receiverIsObserver && pushedUserIsObserver {
+			return nil
+		}
+
 		perms := append([]string(nil), a.permissions...)
 		username := a.username
 		return c.write(clientMessage{

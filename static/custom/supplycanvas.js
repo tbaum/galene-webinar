@@ -300,6 +300,159 @@
   init();
 
   /**
+   * Attendance Tracking
+   * Tracks participant attendance with hybrid approach:
+   * 1. Join/Leave events via navigator.sendBeacon() (reliable even on page unload)
+   * 2. Heartbeat events every 5 minutes via fetch() (connection liveness)
+   */
+  let attendanceHeartbeatInterval = null;
+  let hasJoinedSession = false;
+
+  const ATTENDANCE_API_URL = '/api/internal/attendance';
+  const HEARTBEAT_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+
+  /**
+   * Send attendance event to backend
+   * @param {string} eventType - 'join', 'leave', or 'heartbeat'
+   * @param {boolean} useBeacon - Use sendBeacon for reliability (join/leave)
+   */
+  function sendAttendanceEvent(eventType, useBeacon = false) {
+    const token = sessionStorage.getItem(TOKEN_STORAGE_KEY);
+    if (!token) {
+      console.warn('[SupplyCanvas Attendance] No JWT token - skipping attendance event:', eventType);
+      return;
+    }
+
+    const timestamp = new Date().toISOString();
+    const payload = JSON.stringify({
+      eventType: eventType,
+      token: token,
+      timestamp: timestamp
+    });
+
+    console.log('[SupplyCanvas Attendance] Sending event:', eventType, 'at', timestamp);
+
+    if (useBeacon && navigator.sendBeacon) {
+      // Use sendBeacon for reliable delivery (works even on page unload)
+      const blob = new Blob([payload], { type: 'application/json' });
+      const success = navigator.sendBeacon(ATTENDANCE_API_URL, blob);
+      console.log('[SupplyCanvas Attendance] sendBeacon result:', success ? 'queued' : 'failed');
+    } else {
+      // Use fetch for heartbeat (not critical if lost)
+      fetch(ATTENDANCE_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: payload,
+        keepalive: true // Ensure request completes even during page navigation
+      }).then(function(response) {
+        if (response.ok) {
+          console.log('[SupplyCanvas Attendance] Event sent successfully:', eventType);
+        } else {
+          console.warn('[SupplyCanvas Attendance] Event failed:', eventType, response.status);
+        }
+      }).catch(function(error) {
+        console.error('[SupplyCanvas Attendance] Network error:', error);
+      });
+    }
+  }
+
+  /**
+   * Track join event when user connects to Galene
+   */
+  function trackJoinEvent() {
+    if (hasJoinedSession) {
+      console.log('[SupplyCanvas Attendance] Join event already sent for this session');
+      return;
+    }
+
+    console.log('[SupplyCanvas Attendance] User joined webinar');
+    sendAttendanceEvent('join', true); // Use beacon for reliability
+    hasJoinedSession = true;
+
+    // Start heartbeat interval
+    if (!attendanceHeartbeatInterval) {
+      attendanceHeartbeatInterval = setInterval(function() {
+        console.log('[SupplyCanvas Attendance] Sending heartbeat');
+        sendAttendanceEvent('heartbeat', false); // Use fetch for heartbeat
+      }, HEARTBEAT_INTERVAL_MS);
+      console.log('[SupplyCanvas Attendance] Heartbeat interval started (every 5 minutes)');
+    }
+  }
+
+  /**
+   * Track leave event when user disconnects or closes page
+   */
+  function trackLeaveEvent() {
+    if (!hasJoinedSession) {
+      console.log('[SupplyCanvas Attendance] No join event - skipping leave event');
+      return;
+    }
+
+    console.log('[SupplyCanvas Attendance] User leaving webinar');
+    sendAttendanceEvent('leave', true); // Use beacon for reliability
+
+    // Stop heartbeat interval
+    if (attendanceHeartbeatInterval) {
+      clearInterval(attendanceHeartbeatInterval);
+      attendanceHeartbeatInterval = null;
+      console.log('[SupplyCanvas Attendance] Heartbeat interval stopped');
+    }
+
+    hasJoinedSession = false;
+  }
+
+  /**
+   * Monitor Galene connection to track join/leave
+   */
+  function monitorAttendance() {
+    // Check when serverConnection becomes available and user is connected
+    const checkInterval = setInterval(function() {
+      if (typeof serverConnection !== 'undefined' && serverConnection && serverConnection.socket) {
+        // Check if socket is connected
+        if (serverConnection.socket.readyState === WebSocket.OPEN) {
+          // User is connected - track join
+          trackJoinEvent();
+          clearInterval(checkInterval);
+
+          // Monitor disconnect
+          const originalClose = serverConnection.socket.onclose;
+          serverConnection.socket.onclose = function(event) {
+            trackLeaveEvent();
+
+            // Call original handler if it exists
+            if (originalClose) {
+              originalClose.call(this, event);
+            }
+          };
+        }
+      }
+    }, 500);
+
+    // Stop checking after 30 seconds
+    setTimeout(function() {
+      clearInterval(checkInterval);
+    }, 30000);
+  }
+
+  // Track leave on page unload (backup for socket close)
+  window.addEventListener('beforeunload', function() {
+    trackLeaveEvent();
+  });
+
+  // Track leave on visibility change (user switches tab for extended period)
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden && hasJoinedSession) {
+      console.log('[SupplyCanvas Attendance] Page hidden - user may have left');
+      // Don't send leave immediately - wait for heartbeat timeout on server
+    }
+  });
+
+  // Start attendance monitoring
+  monitorAttendance();
+
+  /**
    * Additional customizations can be added below
    */
 
@@ -308,6 +461,8 @@
     console.log('[SupplyCanvas Debug] Server Connection:', serverConnection);
     console.log('[SupplyCanvas Debug] Permissions:', serverConnection?.permissions);
     console.log('[SupplyCanvas Debug] Body Classes:', document.body.className);
+    console.log('[SupplyCanvas Debug] Has Joined Session:', hasJoinedSession);
+    console.log('[SupplyCanvas Debug] Heartbeat Interval:', attendanceHeartbeatInterval ? 'running' : 'stopped');
   };
 
   console.log('[SupplyCanvas] Use supplyCanvasDebug() in console for debugging info');

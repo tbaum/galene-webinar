@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="SupplyCanvas_Icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 615.12 410.12">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e76f51;
+      }
+
+      .cls-2 {
+        fill: #ffd576;
+      }
+
+      .cls-3 {
+        fill: #2a9d8f;
+      }
+
+      .cls-4 {
+        fill: #35bca8;
+      }
+
+      .cls-5 {
+        fill: #227a6d;
+      }
+
+      .cls-6 {
+        fill: #f4a261;
+      }
+
+      .cls-7 {
+        fill: #c4a15c;
+      }
+
+      .cls-8 {
+        fill: #c95e49;
+      }
+
+      .cls-9 {
+        fill: #ff775c;
+      }
+
+      .cls-11 {
+        fill: #ce8452;
+      }
+
+      .cls-12 {
+        fill: #ffb871;
+      }
+
+      .cls-13 {
+        fill: #e9c46a;
+      }
+    </style>
+  </defs>
+  <g>
+    <!-- Teal block (bottom left) -->
+    <g>
+      <rect class="cls-3" x="0" y="205.11" width="205.01" height="205.01" transform="translate(-205.11 410.12) rotate(-90)"/>
+      <polygon class="cls-5" points="0 410.12 14.14 396.29 191 396.29 191 219.24 205.01 205.11 205.01 410.12 0 410.12"/>
+      <polygon class="cls-4" points="205.01 205.09 190.95 219.25 14.16 219.25 14.16 396.26 0 410.1 0 205.09 205.01 205.09"/>
+    </g>
+    <!-- Yellow block (bottom center) -->
+    <g>
+      <rect class="cls-13" x="205.08" y="205.11" width="205.01" height="205.01" transform="translate(-.03 615.2) rotate(-90)"/>
+      <polygon class="cls-7" points="205.08 410.12 219.22 396.29 396.07 396.29 396.07 219.24 410.09 205.11 410.09 410.12 205.08 410.12"/>
+      <polygon class="cls-2" points="410.09 205.09 396.03 219.25 219.24 219.25 219.24 396.26 205.08 410.1 205.08 205.09 410.09 205.09"/>
+    </g>
+    <!-- Orange block (bottom right) -->
+    <g>
+      <rect class="cls-6" x="410.11" y="205.05" width="205.01" height="205.01" transform="translate(205.06 820.18) rotate(-90)"/>
+      <polygon class="cls-11" points="410.11 410.07 424.25 396.23 601.11 396.23 601.11 219.18 615.12 205.05 615.12 410.07 410.11 410.07"/>
+      <polygon class="cls-12" points="615.12 205.03 601.06 219.19 424.27 219.19 424.27 396.19 410.11 410.04 410.11 205.03 615.12 205.03"/>
+    </g>
+    <!-- Coral/Red block (top right) -->
+    <g>
+      <rect class="cls-1" x="410.11" y=".02" width="205.01" height="205.01" transform="translate(410.09 615.14) rotate(-90)"/>
+      <polygon class="cls-8" points="410.11 205.03 424.25 191.2 601.11 191.2 601.11 14.14 615.12 .02 615.12 205.03 410.11 205.03"/>
+      <polygon class="cls-9" points="615.12 0 601.06 14.16 424.27 14.16 424.27 191.16 410.11 205.01 410.11 0 615.12 0"/>
+    </g>
+  </g>
+</svg>

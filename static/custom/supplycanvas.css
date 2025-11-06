@@ -1,0 +1,477 @@
+/* @import must be at the top of the file per CSS spec */
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap');
+
+/**
+ * SupplyCanvas Webinar - Custom Galene Styling
+ *
+ * This file contains CSS overrides for the Galene videoconference interface
+ * to match SupplyCanvas branding and customize user experience.
+ *
+ * Brand colors extracted from SupplyCanvas logo and website.
+ * Font: Comfortaa (from www.supplycanvas.com)
+ *
+ * Maintainability: This file only contains overrides, not replacements.
+ * When updating Galene, check if selectors still work, but no merging needed.
+ */
+
+/* ============================================
+   SupplyCanvas Brand Colors (from logo)
+   ============================================ */
+:root {
+  /* Primary - Teal/Green shades */
+  --sc-teal: #2a9d8f;
+  --sc-teal-light: #35bca8;
+  --sc-teal-dark: #227a6d;
+
+  /* Secondary - Coral/Orange shades */
+  --sc-coral: #e76f51;
+  --sc-coral-light: #ff775c;
+  --sc-coral-dark: #c95e49;
+  --sc-orange: #f4a261;
+  --sc-orange-light: #ffb871;
+  --sc-orange-dark: #ce8452;
+
+  /* Accent - Yellow shades */
+  --sc-yellow: #e9c46a;
+  --sc-yellow-light: #ffd576;
+  --sc-yellow-dark: #c4a15c;
+
+  /* Text - Dark blue */
+  --sc-dark: #264653;
+
+  /* Derived colors for UI */
+  --sc-primary: #2a9d8f;
+  --sc-primary-hover: #227a6d;
+  --sc-secondary: #e76f51;
+  --sc-accent: #e9c46a;
+  --sc-success: #2a9d8f;
+  --sc-danger: #e76f51;
+  --sc-warning: #e9c46a;
+  --sc-info: #35bca8;
+  --sc-light: #f5f5f5;
+}
+
+/* ============================================
+   Typography - SupplyCanvas Font
+   ============================================ */
+
+body,
+.app,
+#title,
+.header-title,
+.galene-header {
+  font-family: 'Comfortaa', 'Arial', sans-serif;
+}
+
+/* ============================================
+   Hide Chat Window (All Users)
+   ============================================ */
+#chat,
+#inputform {
+  display: none !important;
+}
+
+/* Hide chat-related buttons */
+.message-button,
+.chat-button {
+  display: none !important;
+}
+
+/* ============================================
+   Hide Participants List for Viewers
+   ============================================ */
+/* This rule is applied via JavaScript based on user permissions */
+body.permission-observe #left-sidebar {
+  display: none !important;
+}
+
+/* Adjust main container when sidebar is hidden */
+body.permission-observe .container {
+  margin-left: 0 !important;
+  width: 100% !important;
+}
+
+/* Hide sidebar toggle button for viewers */
+body.permission-observe #sidebarCollapse {
+  display: none !important;
+}
+
+/* ============================================
+   Branding: SupplyCanvas Colors & Styling
+   ============================================ */
+
+/* Primary button colors - Teal */
+.btn-primary,
+#presentbutton,
+button.btn-success {
+  background-color: var(--sc-teal) !important;
+  border-color: var(--sc-teal) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+#presentbutton:hover,
+button.btn-success:hover {
+  background-color: var(--sc-teal-dark) !important;
+  border-color: var(--sc-teal-dark) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(42, 157, 143, 0.3);
+}
+
+/* Secondary/danger buttons - Coral */
+.btn-secondary,
+.btn-danger,
+button.btn-danger {
+  background-color: var(--sc-coral) !important;
+  border-color: var(--sc-coral) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover,
+.btn-danger:hover,
+button.btn-danger:hover {
+  background-color: var(--sc-coral-dark) !important;
+  border-color: var(--sc-coral-dark) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(231, 111, 81, 0.3);
+}
+
+/* Warning buttons - Yellow */
+.btn-warning {
+  background-color: var(--sc-yellow) !important;
+  border-color: var(--sc-yellow) !important;
+  color: var(--sc-dark) !important;
+}
+
+.btn-warning:hover {
+  background-color: var(--sc-yellow-dark) !important;
+  border-color: var(--sc-yellow-dark) !important;
+}
+
+/* Header branding */
+#title.header-title {
+  color: var(--sc-dark);
+  font-weight: 700;
+  font-size: 1.3em;
+  letter-spacing: 0.5px;
+}
+
+/* Sidebar header branding */
+.galene-header {
+  color: var(--sc-teal);
+  font-weight: 700;
+  font-size: 1.2em;
+  letter-spacing: 0.5px;
+}
+
+/* Navigation bar styling */
+.topnav {
+  background-color: #ffffff;
+  border-bottom: 2px solid var(--sc-teal);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Sidebar styling */
+#left-sidebar {
+  background-color: #fafafa !important;
+  border-right: 1px solid #e0e0e0;
+}
+
+/* Override Galene's default purple colors with SupplyCanvas branding */
+.profile-logo {
+  background: var(--sc-teal) !important;
+}
+
+.users-header {
+  background: #ffffff !important;
+  border-bottom: 2px solid var(--sc-teal) !important;
+}
+
+.sidenav {
+  background-color: var(--sc-teal) !important;
+}
+
+.peer-active {
+  border-color: var(--sc-teal) !important;
+}
+
+.file-progress {
+  accent-color: var(--sc-teal) !important;
+}
+
+/* Active/selected states */
+.nav-menu li.active,
+.nav-menu li:hover {
+  background-color: rgba(42, 157, 143, 0.1);
+}
+
+/* Links and interactive elements */
+a,
+.link {
+  color: var(--sc-teal);
+  transition: color 0.2s ease;
+}
+
+a:hover,
+.link:hover {
+  color: var(--sc-teal-dark);
+  text-decoration: none;
+}
+
+/* User list items */
+#users .user {
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+#users .user.active,
+#users .user.speaking {
+  border-left-color: var(--sc-teal);
+  background-color: rgba(42, 157, 143, 0.05);
+}
+
+/* Video controls */
+.video-controls button {
+  background-color: rgba(42, 157, 143, 0.9);
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.video-controls button:hover {
+  background-color: var(--sc-teal-dark);
+  transform: scale(1.1);
+}
+
+/* Connection status indicators */
+.connection-status.connected {
+  color: var(--sc-teal);
+}
+
+.connection-status.error {
+  color: var(--sc-coral);
+}
+
+.connection-status.warning {
+  color: var(--sc-yellow);
+}
+
+/* ============================================
+   Logo in Header
+   ============================================ */
+#title::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-image: url('/custom/logo-icon.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* ============================================
+   Presenter-Only Enhancements
+   ============================================ */
+/* Presenters see full interface - no additional styling needed */
+/* Only viewers have restricted UI via .permission-observe class */
+
+/* ============================================
+   Additional Polish & Refinements
+   ============================================ */
+
+/* Rounded corners and modern feel */
+.btn,
+button,
+input,
+select,
+textarea {
+  border-radius: 8px;
+}
+
+/* Video containers */
+.video-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Settings panel */
+.settings-panel,
+.modal,
+dialog {
+  border-radius: 12px;
+  border: 2px solid var(--sc-teal);
+  box-shadow: 0 8px 24px rgba(42, 157, 143, 0.2);
+}
+
+/* Input focus states */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--sc-teal);
+  box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sc-teal);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sc-teal-dark);
+}
+
+/* Loading animations */
+.spinner,
+.loading {
+  border-color: var(--sc-teal) transparent var(--sc-teal) transparent;
+}
+
+/* Toast notifications */
+.toast,
+.notification {
+  border-left: 4px solid var(--sc-teal);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toast.error,
+.notification.error {
+  border-left-color: var(--sc-coral);
+}
+
+.toast.warning,
+.notification.warning {
+  border-left-color: var(--sc-yellow);
+}
+
+/* ============================================
+   Mobile Responsiveness
+   ============================================ */
+@media (max-width: 768px) {
+  /* Ensure viewers have full-width video on mobile */
+  body.permission-observe #main {
+    padding: 0;
+  }
+
+  body.permission-observe .container {
+    padding: 10px;
+  }
+
+  /* Adjust logo size on mobile */
+  #title::before {
+    width: 90px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  /* Adjust header title */
+  #title.header-title {
+    font-size: 1.1em;
+  }
+
+  /* Mobile-optimized buttons */
+  .btn,
+  button {
+    padding: 10px 16px;
+    font-size: 0.95em;
+  }
+}
+
+/* Tablet breakpoint */
+@media (max-width: 992px) and (min-width: 769px) {
+  #title::before {
+    width: 100px;
+    height: 28px;
+  }
+}
+
+/* ============================================
+   Print Styles (hide UI for printing)
+   ============================================ */
+@media print {
+  #left-sidebar,
+  .topnav,
+  .nav-menu,
+  .video-controls {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   Accessibility Enhancements
+   ============================================ */
+
+/* Focus visible for keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--sc-teal);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn,
+  button {
+    border: 2px solid currentColor;
+  }
+
+  #title.header-title,
+  .galene-header {
+    font-weight: 700;
+    text-decoration: underline;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   Dark Mode Support (Optional Future Enhancement)
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  /* Uncomment to enable dark mode
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .topnav {
+    background-color: #2a2a2a;
+    border-bottom-color: var(--sc-teal-light);
+  }
+
+  #left-sidebar {
+    background-color: #252525;
+    border-right-color: #444;
+  }
+
+  input, select, textarea {
+    background-color: #333;
+    color: #e0e0e0;
+    border-color: #555;
+  }
+  */
+}
